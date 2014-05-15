@@ -54,7 +54,7 @@ public class CommonTickHandler {
 				
 				for(Entity entity : temp) {
 					NBTTagCompound compoundTag = entity.getEntityData();
-					s.createExplosion(entity, entity.posX, entity.posY, entity.posZ, compoundTag.hasKey("explosionSize") ? compoundTag.getFloat("explosionSize"): 3.0F, true);
+					s.createExplosion(entity, entity.posX, entity.posY, entity.posZ, compoundTag.hasKey("explosionSize") ? compoundTag.getFloat("explosionSize"): 3.0F, false);
 				}
 				
 				temp.clear();

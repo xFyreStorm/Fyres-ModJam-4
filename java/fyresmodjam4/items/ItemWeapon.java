@@ -4,8 +4,8 @@ import fyresmodjam4.Modjam4;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,7 +56,7 @@ public class ItemWeapon extends Item {
 					Entity entity = EntityList.createEntityByID(itemCompoundTag.getInteger("firedEntity"), world);
 					
 					if(entity != null) {
-						entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+						entity.setLocationAndAngles(player.posX, player.posY + player.eyeHeight, player.posZ, player.rotationYaw, player.rotationPitch);
 						
 						double projectileSpeed = 4.0D;
 						double motionX = -MathHelper.sin((float) (entity.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (entity.rotationPitch / 180.0F * Math.PI));
@@ -107,8 +107,8 @@ public class ItemWeapon extends Item {
 			tagCompound.setInteger("shotDelay", 200); //Randomized, or preset?
 			tagCompound.setLong("lastShot", (int) System.currentTimeMillis());
 			
-			tagCompound.setInteger("firedEntity", EntityList.getEntityID(new EntityCow(null)));
-			tagCompound.setBoolean("explosiveShots", true);
+			tagCompound.setInteger("firedEntity", EntityList.getEntityID(new EntityArrow(null)));
+			tagCompound.setBoolean("explosiveShots", false);
 		}
 	}
 }
