@@ -1,5 +1,9 @@
 package fyresmodjam4;
 
+import java.lang.reflect.Field;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
@@ -17,7 +21,7 @@ public class Modjam4 {
 	
 	//Hmm, where to begin...
 	
-	@SidedProxy(clientSide = "fyresmodjam4.ClientProxy")
+	@SidedProxy(clientSide = "fyresmodjam4.ClientProxy", serverSide = "fyresmodjam4.CommonProxy")
 	public static CommonProxy proxy;
 	
 	public Item pistol;
@@ -25,16 +29,23 @@ public class Modjam4 {
 	@Instance("fyrestorm_modjam4")
 	public static Modjam4 instance;
 	
+	public Field rightClickDelayTimer;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		
+		try {
+			rightClickDelayTimer = Minecraft.class.getDeclaredField("rightClickDelayTimer");
+			rightClickDelayTimer.setAccessible(true);
+		} catch (Exception e) {}
 		
 		//Config Stuff
 		
 		//Register Items
 		
-		pistol = new ItemWeapon("Pistol").setUnlocalizedName("pistol");
+		pistol = new ItemWeapon("Pistol").setUnlocalizedName("pistol").setCreativeTab(CreativeTabs.tabCombat);
 		GameRegistry.registerItem(pistol, "pistol");
-				
+
 		//Register Blocks
 				
 		
