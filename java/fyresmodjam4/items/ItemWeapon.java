@@ -2,10 +2,12 @@ package fyresmodjam4.items;
 
 import fyresmodjam4.Modjam4;
 import fyresmodjam4.Modjam4.AmmoType;
+import fyresmodjam4.handlers.CommonTickHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.Item;
@@ -91,6 +93,8 @@ public class ItemWeapon extends Item {
 						}
 						
 						world.spawnEntityInWorld(entity);
+						
+						CommonTickHandler.tracking.add(entity);
 					}
 					
 					world.playSoundAtEntity(player, "fyresmodjam4:bullet_shot", 1.0F, 1.0F);
@@ -114,7 +118,7 @@ public class ItemWeapon extends Item {
 			tagCompound.setLong("lastShot", (int) System.currentTimeMillis());
 			
 			tagCompound.setInteger("firedEntity", EntityList.getEntityID(new EntityArrow(null)));
-			tagCompound.setBoolean("explosiveShots", false);
+			tagCompound.setBoolean("explosiveShots", true);
 		}
 	}
 }

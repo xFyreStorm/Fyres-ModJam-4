@@ -3,6 +3,7 @@ package fyresmodjam4.handlers;
 import java.util.ArrayList;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,7 +16,8 @@ import fyresmodjam4.items.ItemWeapon;
 
 public class CommonTickHandler {
 	
-	public ArrayList<Entity> temp = new ArrayList<Entity>();
+	public static ArrayList<Entity> tracking = new ArrayList<Entity>();
+	public static ArrayList<Entity> temp = new ArrayList<Entity>();
 	
 	@SubscribeEvent
 	public void serverTick(ServerTickEvent event) {
@@ -38,25 +40,22 @@ public class CommonTickHandler {
 					}
 				}
 				
-				for(Object o : s.loadedEntityList) {
-					if(o == null || !(o instanceof Entity)) {continue;}
+				for(Entity entity : tracking) {
+					if(entity == null) {continue;}
+					if(entity.isDead) {temp.add(entity); continue;}
 					
-					Entity entity = (Entity) o;
 					NBTTagCompound compoundTag = entity.getEntityData();
 					
 					if(compoundTag.hasKey("explodeOnContact") && compoundTag.getBoolean("explodeOnContact")) {
 						if(entity.onGround || entity.isCollided || entity.isCollidedHorizontally || entity.isCollidedVertically) {
+							s.createExplosion(entity, entity.posX, entity.posY, entity.posZ, compoundTag.hasKey("explosionSize") ? compoundTag.getFloat("explosionSize"): 3.0F, false);
+							if(entity instanceof EntityLiving) {((EntityLiving) entity).setHealth(0);} else {entity.setDead();}
 							temp.add(entity);
-							entity.setDead();
 						}
 					}
 				}
 				
-				for(Entity entity : temp) {
-					NBTTagCompound compoundTag = entity.getEntityData();
-					s.createExplosion(entity, entity.posX, entity.posY, entity.posZ, compoundTag.hasKey("explosionSize") ? compoundTag.getFloat("explosionSize"): 3.0F, false);
-				}
-				
+				for(Entity entity : temp) {tracking.remove(entity);}
 				temp.clear();
 			}
 		}
