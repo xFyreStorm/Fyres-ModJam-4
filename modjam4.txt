@@ -1,0 +1,52 @@
+Borderlands Weapon Mod Spiritual Successor
+-Not Borderlands themed!
+-Customizable weapons (Will they still be randomized?)
+-Name?
+
+Shields (Randomized? Preset ranks?) + Modules
+-Current/Max Capacity
+-Recharge Speed
+-Deleption/Passive Effects (Passive Healing, Resistance, etc.)
+-Module Slots
+
+Guns (Randomized? Preset ranks?) + Modules
+-Ammo (Current/Max capacity)
+-Recoil
+-Accuracy
+-Range?
+-Reload Speed
+-Bullet Type (Possibly pulling from entity pool for joke items? (Explosive Cow Launcher))
+-Pistol, SMG, Shotgun, Assault Rifle, Sniper Rifle, Rocket/Grenade Launcher
+-Module Slots
+-More damage to mobs/less damage to players (for PvP purposes)
+
+Ammo
+-Different types per weapon? (Incindiary, Explosive, etc)
+-Keybinding to change currently used ammo?
+-Increases player ammo pool by set amount
+
+Grenades (Preset types?)
+-Radius
+-Damage
+-Special Effects (MIRV, Sticky, Fire (Molotov?))
+-Singular item using generic grenade ammo?
+-Module Slots?
+
+Module GUI
+-Can swap modules, will take any item that accept modules
+
+Weapon + Ammo Bench (Shows available blueprints and what's needed, sorted by name)
+-Iron/Gunpowder?
+-Generic Weapon Part items? (Ranked 1-5?)
+
+Modules
+-Effects stats like accuracy or reload speed (+10%, +25%, etc)
+-For specific weapon types
+
+Shield + Ammo HUD
+Reloading
+Gun Experience per gun per player?
+Item/Block Icons
+Villagers sell weapons/shields/grenades
+Minimap (Compass, only detects enemies, location on screen in config)
+Ammo capacity upgrades (set ammounts)
