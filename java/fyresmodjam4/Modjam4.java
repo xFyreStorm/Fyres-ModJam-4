@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -86,6 +87,7 @@ public class Modjam4 {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
+		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerRenderInformation();
 	}
 	
@@ -105,14 +107,14 @@ public class Modjam4 {
 		EntityPlayer player = event.player;
 		NBTTagCompound tagCompound = player.getEntityData();
 		
-		if(!tagCompound.hasKey("ammoRanks")) {tagCompound.setTag("ammoRanks", new NBTTagCompound());}
+		if(!tagCompound.hasKey("ammoInfo")) {tagCompound.setTag("ammoInfo", new NBTTagCompound());}
 		
-		NBTTagCompound ammoRanks = tagCompound.getCompoundTag("ammoRanks");
+		NBTTagCompound ammoInfo = tagCompound.getCompoundTag("ammoInfo");
 		for(AmmoType ammoType : AmmoType.values()) {
 			String name = ammoType.name.replace(" ", "").toLowerCase();
-			if(!ammoRanks.hasKey(name)) {ammoRanks.setInteger(name, ammoType.ammoPickupIncrement);}
-			name += "Max";
-			if(!ammoRanks.hasKey(name)) {ammoRanks.setInteger(name, 0);}
+			if(!ammoInfo.hasKey(name)) {ammoInfo.setInteger(name, ammoType.ammoPickupIncrement);}
+			name += "Rank";
+			if(!ammoInfo.hasKey(name)) {ammoInfo.setInteger(name, 0);}
 		}
 	}
 }
