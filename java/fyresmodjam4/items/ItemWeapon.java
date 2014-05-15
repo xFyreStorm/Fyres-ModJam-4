@@ -33,16 +33,29 @@ public class ItemWeapon extends Item {
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-		if(itemStack.hasTagCompound()) {
-			NBTTagCompound tagCompound = itemStack.getTagCompound();
-			if(tagCompound.hasKey("shotDelay")) {
-				if(tagCompound.getInteger("shotDelay") == 0) {
-					
-				} else {}
+		giveStats(itemStack);
+		
+		if(!world.isRemote) {
+			if(itemStack.hasTagCompound()) {
+				boolean shouldFire = false;
+				
+				NBTTagCompound tagCompound = itemStack.getTagCompound();
+				
+				long time = System.currentTimeMillis();
+				
+				if(time - tagCompound.getLong("lastShot") >= tagCompound.getInteger("shotDelay")) {
+					tagCompound.setLong("lastShot", time);
+					shouldFire = true;
+				}
+				
+				if(shouldFire) {
+					world.playSoundAtEntity(player, "fyresmodjam4:bullet_shot", 1.0F, 1.0F);
+				}
 			}
+		} else {
+			Modjam4.instance.resetRightClickDelay();
 		}
 		
-		Modjam4.instance.resetRightClickDelay();
 		return itemStack;
 	}
 
@@ -52,7 +65,9 @@ public class ItemWeapon extends Item {
 		
 		if(tagCompound != null && !tagCompound.hasKey("givenStats")) {
 			tagCompound.setBoolean("givenStats", true);
-			tagCompound.setInteger("shotDelay", 0);
+			
+			tagCompound.setInteger("shotDelay", 200);
+			tagCompound.setLong("lastShot", (int) System.currentTimeMillis());
 		}
 	}
 }
