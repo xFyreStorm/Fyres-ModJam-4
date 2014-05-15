@@ -58,9 +58,22 @@ public class ItemWeapon extends Item {
 					if(entity != null) {
 						entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.cameraPitch, player.cameraYaw);
 						
-						entity.setVelocity(-MathHelper.sin((float) (entity.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (entity.rotationPitch / 180.0F * Math.PI)),
-								MathHelper.cos((float) (entity.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (entity.rotationPitch / 180.0F * Math.PI)),
-								-MathHelper.sin((float) (entity.rotationPitch / 180.0F * Math.PI)));
+						double projectileSpeed = 2.0D;
+						double motionX = -MathHelper.sin((float) (player.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (player.rotationPitch / 180.0F * Math.PI));
+						double motionY = MathHelper.cos((float) (player.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (player.rotationPitch / 180.0F * Math.PI));
+						double motionZ = -MathHelper.sin((float) (player.rotationPitch / 180.0F * Math.PI));
+						
+						double d = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
+						
+						motionX = (motionX/d) * projectileSpeed;
+						motionY = (motionY/d) * projectileSpeed;
+						motionZ = (motionZ/d) * projectileSpeed;
+						
+						double d2 = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+						
+						entity.setAngles((float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI), (float) (Math.atan2(motionY, d2) * 180.0D / Math.PI));
+						
+						entity.setVelocity(motionX, motionY, motionZ);
 						
 						world.spawnEntityInWorld(entity);
 					}
