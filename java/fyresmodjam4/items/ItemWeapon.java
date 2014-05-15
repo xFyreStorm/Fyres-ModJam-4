@@ -44,24 +44,24 @@ public class ItemWeapon extends Item {
 				
 				//TODO Check player ammo first.
 				
-				NBTTagCompound tagCompound = itemStack.getTagCompound();
+				NBTTagCompound itemCompoundTag = itemStack.getTagCompound();
 				
 				long time = System.currentTimeMillis();
-				if(time - tagCompound.getLong("lastShot") >= tagCompound.getInteger("shotDelay")) {
-					tagCompound.setLong("lastShot", time);
+				if(time - itemCompoundTag.getLong("lastShot") >= itemCompoundTag.getInteger("shotDelay")) {
+					itemCompoundTag.setLong("lastShot", time);
 					shouldFire = true;
 				}
 				
 				if(shouldFire) {
-					Entity entity = EntityList.createEntityByID(tagCompound.getInteger("firedEntity"), world);
+					Entity entity = EntityList.createEntityByID(itemCompoundTag.getInteger("firedEntity"), world);
 					
 					if(entity != null) {
-						entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.cameraPitch, player.cameraYaw);
+						entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
 						
-						double projectileSpeed = 2.0D;
-						double motionX = -MathHelper.sin((float) (player.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (player.rotationPitch / 180.0F * Math.PI));
-						double motionY = MathHelper.cos((float) (player.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (player.rotationPitch / 180.0F * Math.PI));
-						double motionZ = -MathHelper.sin((float) (player.rotationPitch / 180.0F * Math.PI));
+						double projectileSpeed = 4.0D;
+						double motionX = -MathHelper.sin((float) (entity.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (entity.rotationPitch / 180.0F * Math.PI));
+						double motionZ = MathHelper.cos((float) (entity.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (entity.rotationPitch / 180.0F * Math.PI));
+						double motionY = -MathHelper.sin((float) (entity.rotationPitch / 180.0F * Math.PI));
 						
 						double d = MathHelper.sqrt_double(motionX * motionX + motionY * motionY + motionZ * motionZ);
 						
@@ -74,6 +74,15 @@ public class ItemWeapon extends Item {
 						entity.setAngles((float) (Math.atan2(motionX, motionZ) * 180.0D / Math.PI), (float) (Math.atan2(motionY, d2) * 180.0D / Math.PI));
 						
 						entity.setVelocity(motionX, motionY, motionZ);
+						
+						NBTTagCompound entityCompoundTag = entity.getEntityData();
+						
+						entityCompoundTag.setInteger("spawnedBy", player.getEntityId());
+						
+						if(itemCompoundTag.hasKey("explosiveShots") && itemCompoundTag.getBoolean("explosiveShots")) {
+							entityCompoundTag.setBoolean("explodeOnContact", true);
+							entityCompoundTag.setFloat("explosionSize", 3.0F);
+						}
 						
 						world.spawnEntityInWorld(entity);
 					}
@@ -99,6 +108,7 @@ public class ItemWeapon extends Item {
 			tagCompound.setLong("lastShot", (int) System.currentTimeMillis());
 			
 			tagCompound.setInteger("firedEntity", EntityList.getEntityID(new EntityCow(null)));
+			tagCompound.setBoolean("explosiveShots", true);
 		}
 	}
 }

@@ -1,7 +1,9 @@
 package fyresmodjam4.handlers;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -28,6 +30,20 @@ public class CommonTickHandler {
 					//Inefficient :P Need to find a better place to init stacks.
 					for(ItemStack stack : player.inventory.mainInventory) {
 						if(stack != null && stack.getItem() instanceof ItemWeapon) {ItemWeapon.giveStats(stack);}
+					}
+				}
+				
+				for(Object o : s.loadedEntityList) {
+					if(o == null || !(o instanceof Entity)) {continue;}
+					
+					Entity entity = (Entity) o;
+					NBTTagCompound compoundTag = entity.getEntityData();
+					
+					if(compoundTag.hasKey("explodeOnContact") && compoundTag.getBoolean("explodeOnContact")) {
+						if(entity.onGround || entity.isCollided || entity.isCollidedHorizontally || entity.isCollidedVertically) {
+							s.createExplosion(entity, entity.posX, entity.posY, entity.posZ, compoundTag.hasKey("explosionSize") ? compoundTag.getFloat("explosionSize"): 3.0F, false);
+							//entity.setDead();
+						}
 					}
 				}
 			}
