@@ -18,7 +18,7 @@ public class ItemWeapon extends Item {
 	public void registerIcons(IIconRegister iconRegister) {
 		try {
 			for(int i = 0; i < icons.length; i++) {
-				icons[i] = iconRegister.registerIcon("fyresmodjam4:" + name.toLowerCase() + "_" + i);
+				icons[i] = iconRegister.registerIcon("fyresmodjam4:" + name.toLowerCase() + "_" + (i + 1));
 			}
 		} catch (Exception e) {}
 	}

@@ -1,0 +1,5 @@
+{
+	"bullet_shot": {"catagory":"master","sounds":[{"name":"bullet_shot","stream":"false"}]},
+	"laser_shot": {"catagory":"master","sounds":[{"name":"laser_shot","stream":"false"}]},
+	"rocket_shot": {"catagory":"master","sounds":[{"name":"rocket_shot","stream":"false"}]}
+}
