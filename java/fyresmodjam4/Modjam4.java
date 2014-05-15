@@ -24,12 +24,12 @@ public class Modjam4 {
 	@SidedProxy(clientSide = "fyresmodjam4.ClientProxy", serverSide = "fyresmodjam4.CommonProxy")
 	public static CommonProxy proxy;
 	
-	public Item pistol;
-	
 	@Instance("fyrestorm_modjam4")
 	public static Modjam4 instance;
 	
-	public Field rightClickDelayTimer;
+	public static Item pistol, smg, assaultRifle, sniperRifle, shotgun, rocketLauncher;
+	
+	private Field rightClickDelayTimer;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -37,7 +37,7 @@ public class Modjam4 {
 		try {
 			rightClickDelayTimer = Minecraft.class.getDeclaredField("rightClickDelayTimer");
 			rightClickDelayTimer.setAccessible(true);
-		} catch (Exception e) {}
+		} catch (Exception e) {e.printStackTrace();}
 		
 		//Config Stuff
 		
@@ -60,5 +60,11 @@ public class Modjam4 {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		
+	}
+	
+	public void resetRightClickDelay() {
+		try {
+			rightClickDelayTimer.set(Minecraft.getMinecraft(), 0);
+		} catch (Exception e) {e.printStackTrace();}
 	}
 }
