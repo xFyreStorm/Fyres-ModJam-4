@@ -20,10 +20,10 @@ public class ItemWeapon extends Item {
 
 	public String name;
 	public IIcon[] icons = new IIcon[16];
-	public AmmoType ammoType;
+	public AmmoType[] validAmmoTypes;
 	
-	public ItemWeapon(String name, AmmoType ammoType) {
-		this.ammoType = ammoType;
+	public ItemWeapon(String name, AmmoType... validAmmoTypes) {
+		this.validAmmoTypes = validAmmoTypes;
 		this.name = name;
 		this.setMaxStackSize(1);
 		setCreativeTab(CreativeTabs.tabCombat);

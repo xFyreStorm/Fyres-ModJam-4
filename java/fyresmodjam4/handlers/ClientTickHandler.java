@@ -34,7 +34,7 @@ public class ClientTickHandler {
 					
 					if(ammoInfo.hasKey(name) && ammoInfo.hasKey(name + "Rank")) {
 						FontRenderer fontRenderer = minecraft.fontRenderer;
-						fontRenderer.drawString(ammoInfo.getInteger(name + "Rank") + "/" + weapon.ammoType.maxAmmoByRank[ammoInfo.getInteger(name)], 0, 0, Color.WHITE.getRGB());
+						fontRenderer.drawString(ammoInfo.getInteger(name + "Rank") + "/" + weapon.validAmmoTypes[tagCompound.hasKey("selectedAmmoType") ? tagCompound.getInteger("selectedAmmoType") : 0].maxAmmoByRank[ammoInfo.getInteger(name)], 0, 0, Color.WHITE.getRGB());
 					}
 				}
 			}
