@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class ItemWeapon extends Item {
@@ -53,6 +54,17 @@ public class ItemWeapon extends Item {
 				
 				if(shouldFire) {
 					Entity entity = EntityList.createEntityByID(tagCompound.getInteger("firedEntity"), world);
+					
+					if(entity != null) {
+						entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.cameraPitch, player.cameraYaw);
+						
+						entity.setVelocity(-MathHelper.sin((float) (entity.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (entity.rotationPitch / 180.0F * Math.PI)),
+								MathHelper.cos((float) (entity.rotationYaw / 180.0F * Math.PI)) * MathHelper.cos((float) (entity.rotationPitch / 180.0F * Math.PI)),
+								-MathHelper.sin((float) (entity.rotationPitch / 180.0F * Math.PI)));
+						
+						world.spawnEntityInWorld(entity);
+					}
+					
 					world.playSoundAtEntity(player, "fyresmodjam4:bullet_shot", 1.0F, 1.0F);
 				}
 			}
