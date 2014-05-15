@@ -3,9 +3,7 @@ package fyresmodjam4;
 import java.lang.reflect.Field;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
@@ -33,19 +31,21 @@ public class Modjam4 {
 	
 	public static enum AmmoType {
 		
-		PISTOL("Pistol Ammo", new int[] {200, 300, 400, 500, 600, 700, 800}),
-		SHOTGUN("Shotgun Shells", new int[] {80, 100, 120, 140, 160, 180, 200}),
-		SNIPER("Sniper Rifle Ammo", new int[] {48, 60, 72, 84, 96, 108, 120}),
-		RIFLE("Assault Rifle Ammo", new int[] {280, 420, 560, 700, 840, 980, 1120}),
-		SMG("Submachine Gun Ammo", new int[] {360, 540, 720, 900, 1080, 1260, 1440}),
-		ROCKET("Rockets", new int[] {42, 32, 40, 48, 56, 64, 72}),
-		GRENADE("Grenades", new int[] {3, 4, 5, 6, 7, 8, 9});
+		PISTOL("Pistol Ammo", 54, new int[] {200, 300, 400, 500, 600, 700, 800}),
+		SHOTGUN("Shotgun Shells", 24, new int[] {80, 100, 120, 140, 160, 180, 200}),
+		SNIPER("Sniper Rifle Ammo", 18, new int[] {48, 60, 72, 84, 96, 108, 120}),
+		RIFLE("Assault Rifle Ammo", 54, new int[] {280, 420, 560, 700, 840, 980, 1120}),
+		SMG("Submachine Gun Ammo", 72, new int[] {360, 540, 720, 900, 1080, 1260, 1440}),
+		ROCKET("Rockets", 3, new int[] {42, 32, 40, 48, 56, 64, 72}),
+		GRENADE("Grenades", 1, new int[] {3, 4, 5, 6, 7, 8, 9});
 		
 		public String name;
+		public int ammoPickupIncrement;
 		public int[] maxAmmoByRank;
 		
-		AmmoType(String name, int[] maxAmmoByRank) {
+		AmmoType(String name, int ammoPickupIncrement, int[] maxAmmoByRank) {
 			this.name = name;
+			this.ammoPickupIncrement = ammoPickupIncrement;
 			this.maxAmmoByRank = maxAmmoByRank;
 		}
 	}
@@ -108,6 +108,11 @@ public class Modjam4 {
 		if(!tagCompound.hasKey("ammoRanks")) {tagCompound.setTag("ammoRanks", new NBTTagCompound());}
 		
 		NBTTagCompound ammoRanks = tagCompound.getCompoundTag("ammoRanks");
-		if(!ammoRanks.hasKey("Pistol")) {ammoRanks.setInteger("Pistol", 0);}
+		for(AmmoType ammoType : AmmoType.values()) {
+			String name = ammoType.name.replace(" ", "").toLowerCase();
+			if(!ammoRanks.hasKey(name)) {ammoRanks.setInteger(name, ammoType.ammoPickupIncrement);}
+			name += "Max";
+			if(!ammoRanks.hasKey(name)) {ammoRanks.setInteger(name, 0);}
+		}
 	}
 }
