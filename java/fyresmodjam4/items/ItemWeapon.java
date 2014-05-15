@@ -1,7 +1,9 @@
 package fyresmodjam4.items;
 
 import fyresmodjam4.Modjam4;
+import fyresmodjam4.Modjam4.AmmoType;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,10 +19,14 @@ public class ItemWeapon extends Item {
 
 	public String name;
 	public IIcon[] icons = new IIcon[16];
+	public AmmoType ammoType;
 	
-	public ItemWeapon(String name) {
+	public ItemWeapon(String name, AmmoType ammoType) {
+		this.ammoType = ammoType;
 		this.name = name;
 		this.setMaxStackSize(1);
+		setCreativeTab(CreativeTabs.tabCombat);
+		this.setUnlocalizedName(name.toLowerCase());
 	}
 	
 	@Override
