@@ -1,10 +1,10 @@
 package fyresmodjam4;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import fyresmodjam4.handlers.CommonTickHandler;
-import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
 	public void registerRenderInformation() {
-		MinecraftForge.EVENT_BUS.register(new CommonTickHandler());
+		FMLCommonHandler.instance().bus().register(new CommonTickHandler());
 	}
 }
