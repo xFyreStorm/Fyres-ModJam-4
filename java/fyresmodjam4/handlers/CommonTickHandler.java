@@ -1,5 +1,7 @@
 package fyresmodjam4.handlers;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,6 +14,9 @@ import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import fyresmodjam4.items.ItemWeapon;
 
 public class CommonTickHandler {
+	
+	public ArrayList<Entity> temp = new ArrayList<Entity>();
+	
 	@SubscribeEvent
 	public void serverTick(ServerTickEvent event) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
@@ -41,11 +46,18 @@ public class CommonTickHandler {
 					
 					if(compoundTag.hasKey("explodeOnContact") && compoundTag.getBoolean("explodeOnContact")) {
 						if(entity.onGround || entity.isCollided || entity.isCollidedHorizontally || entity.isCollidedVertically) {
-							s.createExplosion(entity, entity.posX, entity.posY, entity.posZ, compoundTag.hasKey("explosionSize") ? compoundTag.getFloat("explosionSize"): 3.0F, false);
-							//entity.setDead();
+							temp.add(entity);
+							entity.setDead();
 						}
 					}
 				}
+				
+				for(Entity entity : temp) {
+					NBTTagCompound compoundTag = entity.getEntityData();
+					s.createExplosion(entity, entity.posX, entity.posY, entity.posZ, compoundTag.hasKey("explosionSize") ? compoundTag.getFloat("explosionSize"): 3.0F, true);
+				}
+				
+				temp.clear();
 			}
 		}
 	}
