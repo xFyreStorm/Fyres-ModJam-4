@@ -42,17 +42,18 @@ public class CommonTickHandler {
 				
 				for(Entity entity : tracking) {
 					if(entity == null) {continue;}
-					if(entity.isDead) {temp.add(entity); continue;}
 					
 					NBTTagCompound compoundTag = entity.getEntityData();
 					
 					if(compoundTag.hasKey("explodeOnContact") && compoundTag.getBoolean("explodeOnContact")) {
-						if(entity.onGround || entity.isCollided || entity.isCollidedHorizontally || entity.isCollidedVertically) {
+						if(entity.isDead || entity.onGround || entity.isCollided || entity.isCollidedHorizontally || entity.isCollidedVertically) {
 							s.createExplosion(entity, entity.posX, entity.posY, entity.posZ, compoundTag.hasKey("explosionSize") ? compoundTag.getFloat("explosionSize"): 3.0F, false);
 							if(entity instanceof EntityLiving) {((EntityLiving) entity).setHealth(0);} else {entity.setDead();}
 							temp.add(entity);
 						}
 					}
+					
+					if(entity.isDead && !temp.contains(entity)) {temp.add(entity);}
 				}
 				
 				for(Entity entity : temp) {tracking.remove(entity);}
