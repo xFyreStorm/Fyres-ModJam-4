@@ -1,6 +1,7 @@
 package fyresmodjam4;
 
 import java.lang.reflect.Field;
+import java.util.EnumMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,19 +17,23 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.network.FMLEmbeddedChannel;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import fyresmodjam4.items.ItemWeapon;
+import fyresmodjam4.handlers.PacketHandler.ChannelHandler;
 
 @Mod(modid= "fyrestorm_modjam4", name = "Fyre's ModJam 4", version = "1.0.0a")
 public class Modjam4 {
-	
-	//Hmm, where to begin...
 	
 	@SidedProxy(clientSide = "fyresmodjam4.ClientProxy", serverSide = "fyresmodjam4.CommonProxy")
 	public static CommonProxy proxy;
 	
 	@Instance("fyrestorm_modjam4")
 	public static Modjam4 instance;
+	
+	public static EnumMap<Side, FMLEmbeddedChannel> channels = NetworkRegistry.INSTANCE.newChannel("fyresmodjam4", new ChannelHandler());
 	
 	public static enum AmmoType {
 		
